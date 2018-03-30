@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册页面</title>
+  <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <h3 class="text-center">
+        欢迎注册
+      </h3>
+      <form class="col-md-6 col-md-offset-3" onsubmit="return false">
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input type="text" class="form-control" id="username" placeholder="请输入用户名" value="2">
+        </div>
+        <div class="form-group">
+          <label for="passworld">密码</label>
+          <input type="password" class="form-control" id="password" placeholder="请输入密码" value="2">
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> 保存密码15天
+          </label>
+        </div>
+        <button type="submit" id="submit" class="btn btn-default">注册</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="javascripts/jquery.js"></script>
+  <script>
+    $(function () {
+
+      $("#submit").on("click", register)
+
+      function register() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        // console.log('username:'+username+'password:'+password);
+  
+        var options = {
+          url: "register/confirm",
+          type: "POST",
+          data: {
+            username: username,
+            password: password
+          },
+          dataType: 'json',
+        }
+        $.ajax(options)
+          .then(succ,faild)
+      }
+      function succ(res) {
+        switch (res) {
+          case 0:
+            alert('数据库错误');
+            break;
+          case 1:
+            alert('用户重名');
+            break;
+          default:
+          console.log(res);
+          $('#submit').html('恭喜注册成功1秒后跳转登陆');
+          setTimeout(() => {
+            location.href='/login'
+          }, 1000);
+            break;
+        }
+      }
+      function faild(){
+        alert('服务器炸了,有缘来世再见QAQ')
+      }
+
+    })  
+  </script>
+</body>
+
+</html>
